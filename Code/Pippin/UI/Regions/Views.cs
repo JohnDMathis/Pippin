@@ -9,10 +9,16 @@ using System.Windows.Media;
 using System.Windows.Media.Animation;
 using System.Windows.Shapes;
 
-namespace Pippin.UI.Module
+namespace Pippin.UI.Regions
 {
-    public interface IModuleInitializer
+    public enum Regions
     {
-        void InitModule();
+        Header1,
+        Header2,
+        Left,
+        ContentLayer1,
+        ContentLayer2,
+        Right,
+        Footer
     }
 }

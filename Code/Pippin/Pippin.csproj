@@ -60,7 +60,10 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Microsoft.Practices.Prism">
-      <HintPath>..\..\..\..\ERS\code\Lib\Microsoft.Practices.Prism.dll</HintPath>
+      <HintPath>..\..\..\Lib\Prism\Microsoft.Practices.Prism.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Practices.Unity.Silverlight">
+      <HintPath>..\..\..\Lib\Prism\Microsoft.Practices.Unity.Silverlight.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="mscorlib" />
@@ -96,10 +99,15 @@
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Logger.cs" />
     <Compile Include="UI\CatalogService.cs" />
     <Compile Include="UI\Commands\CommandAction.cs" />
     <Compile Include="UI\Commands\CommandBehavior.cs" />
     <Compile Include="UI\Commands\DataContextChangedHandler.cs" />
+    <Compile Include="UI\Events\ModuleLoadedEvent.cs" />
+    <Compile Include="UI\IApplicationController.cs" />
+    <Compile Include="UI\Modules\IModuleTracker.cs" />
+    <Compile Include="UI\Regions\INavigation.cs" />
     <Compile Include="UI\Regions\ITargetRegionCapabilities.cs" />
     <Compile Include="UI\Regions\RegionBehavior.cs" />
     <Compile Include="UI\Converters\Not.cs" />
@@ -107,11 +115,11 @@
     <Compile Include="UI\Converters\ViewRegionConverter.cs" />
     <Compile Include="UI\Converters\VisibilityConverter.cs" />
     <Compile Include="UI\ICatalogService.cs" />
-    <Compile Include="UI\Module\IModuleInitializer.cs" />
     <Compile Include="UI\Regions\RegionManager.cs" />
     <Compile Include="UI\Regions\TargetRegionAttribute.cs" />
     <Compile Include="UI\Regions\ViewRegion.cs" />
-    <Compile Include="UI\ViewModel\EventAggregatorClient.cs" />
+    <Compile Include="UI\Regions\Views.cs" />
+    <Compile Include="UI\Events\EventAggregatorClient.cs" />
     <Compile Include="UI\ViewModel\IViewModel.cs" />
     <Compile Include="UI\ViewModel\ViewModelBase.cs" />
     <Compile Include="VMLocator\ExportViewModel.cs" />

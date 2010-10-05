@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel.Composition;
 using System.Linq;
 using System.Diagnostics;
+using Pippin.UI.ViewModel;
 
 namespace Pippin.VMLocator
 {
@@ -39,6 +40,14 @@ namespace Pippin.VMLocator
         public object this[string viewModel]
         {
             get { return GetViewModel(viewModel); }
+        }
+
+        public static void StartViewModel(string viewModelName)
+        {
+            ViewModelIndexer vmi = new ViewModelIndexer { IsShared = true };
+            var viewModel = vmi[viewModelName] as ViewModelBase;
+            viewModel.Start();
+
         }
 
     }

@@ -1,6 +1,6 @@
-using Microsoft.Practices.Composite.Presentation.Events;
+using Microsoft.Practices.Prism.Events;
 
-namespace Odin.UI.Infrastructure.Events
+namespace Pippin.UI.Events
 {
     public class ModuleLoadedEvent : CompositePresentationEvent<object>
     {

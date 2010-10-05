@@ -1,11 +1,11 @@
 using System.Collections.Specialized;
 using System.ComponentModel;
 using System.Windows;
-
+using Pippin.UI.Events;
 
 namespace Pippin.UI.ViewModel
 {
-    public abstract class ViewModelBase : EventAggregatorClient, INotifyPropertyChanged, IViewModel
+    public abstract class ViewModelBase : INotifyPropertyChanged, IViewModel
     {
         protected ViewModelBase() {} // needed for design time and testing
 
@@ -26,6 +26,10 @@ namespace Pippin.UI.ViewModel
         }
 
         #endregion
+
+        public virtual void Start()
+        {
+        }
 
         public virtual void CleanUp()
         {
