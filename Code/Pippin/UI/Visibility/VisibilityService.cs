@@ -4,9 +4,9 @@ using System.Windows.Controls;
 using System.Windows.Media;
 using System.Windows.Media.Animation;
 
-namespace Odin.UI.Infrastructure.VisibilityService
+namespace Pippin.UI.VisibilityServices
 {
-    public class VisibilityService : IVisibilityService
+    public class DefaultVisibilityService : IVisibilityService
     {
         #region Properties
 
@@ -17,7 +17,7 @@ namespace Odin.UI.Infrastructure.VisibilityService
 
         #region Constructors
 
-        public VisibilityService()
+        public DefaultVisibilityService()
         {
         }
 

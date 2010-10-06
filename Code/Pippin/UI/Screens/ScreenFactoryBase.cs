@@ -1,6 +1,6 @@
 using Microsoft.Practices.Unity;
 
-namespace Odin.UI.Infrastructure.ScreenFramework
+namespace Pippin.UI.Screens
 {
     public abstract class ScreenFactoryBase : IScreenFactory
     {

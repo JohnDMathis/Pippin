@@ -1,4 +1,4 @@
-namespace Odin.UI.Infrastructure.ScreenFramework
+namespace Pippin.UI.Screens
 {
     public enum ScreenEventType
     {

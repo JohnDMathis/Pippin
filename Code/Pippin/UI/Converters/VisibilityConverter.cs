@@ -3,7 +3,7 @@ using System.Globalization;
 using System.Windows;
 using System.Windows.Data;
 
-namespace Odin.UI.Infrastructure.Converters
+namespace Pippin.UI.Converters
 {
     public class VisibilityConverter:IValueConverter
     {

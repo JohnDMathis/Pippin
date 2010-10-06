@@ -1,11 +1,11 @@
 using System.Windows.Controls;
-using Microsoft.Practices.Composite.Events;
+using Microsoft.Practices.Prism.Events;
 using Microsoft.Practices.Unity;
-using Odin.UI.Infrastructure.ViewModel;
+using Pippin.UI.ViewModel;
 
-namespace Odin.UI.Infrastructure.ScreenFramework
+namespace Pippin.UI.Screens
 {
-    public abstract class ScreenBase : EventAggregatorClient, IScreen
+    public abstract class ScreenBase : IScreen
     {
         protected IUnityContainer Container { get; set; }
 

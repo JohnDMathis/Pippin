@@ -1,7 +1,7 @@
 using System;
 using System.Windows.Controls;
 
-namespace Odin.UI.Infrastructure.VisibilityService
+namespace Pippin.UI.VisibilityServices
 {
     public interface IVisibilityService
     {

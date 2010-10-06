@@ -1,6 +1,6 @@
 using System.Windows.Controls;
 
-namespace Odin.UI.Infrastructure.ScreenFramework
+namespace Pippin.UI.Screens
 {
     public interface IScreen
     {

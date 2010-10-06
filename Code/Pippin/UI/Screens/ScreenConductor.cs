@@ -5,27 +5,28 @@ using System.Linq;
 using System.Windows;
 using System.Windows.Media;
 using System.Windows.Threading;
-using Microsoft.Practices.Composite.Events;
-using Microsoft.Practices.Composite.Presentation.Events;
+using Microsoft.Practices.Prism.Events;
 using Microsoft.Practices.Unity;
-using Microsoft.Practices.Composite.Regions;
-using Odin.UI.Infrastructure.Constants;
-using Odin.UI.Infrastructure.ViewModel;
-using Odin.UI.Infrastructure.VisibilityService;
+using Microsoft.Practices.Prism.Regions;
+using Pippin.UI.ViewModel;
+using Pippin.UI.VisibilityServices;
+using Pippin.UI.Regions;
+using Pippin.UI.Events;
 
-namespace Odin.UI.Infrastructure.ScreenFramework
+namespace Pippin.UI.Screens
 {
-    public class ScreenConductor:EventAggregatorClient
+    public class ScreenConductor
     {
 
         protected IUnityContainer Container { get; set; }
         protected IScreenFactoryRegistry ScreenFactoryRegistry { get; set; }
         protected IRegionManager RegionManager { get; set; }
         protected IVisibilityService VisibilityService { get; set; }
-        protected IDictionary<ScreenKeyType, IScreen> ScreenCollection { get; set; }
+        protected IDictionary<string, IScreen> ScreenCollection { get; set; }
         protected IRegion Region { get; set; }
         protected RegionName MyRegionName { get; set; }
-        protected ScreenKeyType activeScreenKey { get; set; }
+        protected IEventAggregator _eventManager { get; private set; }
+        protected string _activeScreenName { get; set; }
 
         public ScreenConductor(IUnityContainer container, 
             IScreenFactoryRegistry screenFactoryRegistry, 
@@ -33,15 +34,15 @@ namespace Odin.UI.Infrastructure.ScreenFramework
             IRegionManager regionManager, 
             IVisibilityService visibilityService)
         {
-            this.activeScreenKey = ScreenKeyType.None;
+            this._activeScreenName = "";
 
             this.Container = container;
             this.ScreenFactoryRegistry = screenFactoryRegistry;
-            this.EventManager = eventAggregator;
+            _eventManager = eventAggregator;
             this.RegionManager = regionManager;
             this.VisibilityService = visibilityService;
             
-            this.ScreenCollection = new Dictionary<ScreenKeyType, IScreen>();
+            this.ScreenCollection = new Dictionary<string, IScreen>();
             SubscribeToEvents();
         }
 
@@ -50,7 +51,7 @@ namespace Odin.UI.Infrastructure.ScreenFramework
 
         protected void SubscribeToEvents()
         {
-            this.EventManager.GetEvent<ScreenEvent>().Subscribe(
+            _eventManager.GetEvent<ScreenEvent>().Subscribe(
                     HandleScreenEvent,
                     ThreadOption.UIThread,
                     true,
@@ -59,7 +60,6 @@ namespace Odin.UI.Infrastructure.ScreenFramework
 
         protected bool IsNotificationRelevant(ScreenEventArgs args)
         {
-            //TODO: PAPA :-)
             return true;
         }
 
@@ -78,7 +78,7 @@ namespace Odin.UI.Infrastructure.ScreenFramework
         private void ActivateScreen(ScreenEventArgs args){
 
             // check if there is no such registered screen type. 
-            if (!this.ScreenFactoryRegistry.HasFactory(args.ScreenKey))
+            if (!this.ScreenFactoryRegistry.HasFactory(args.ScreenName))
             {
                 // the most likely reason is that the screen's module is not loaded.
                 // check again in 2 seconds
@@ -87,14 +87,14 @@ namespace Odin.UI.Infrastructure.ScreenFramework
             }
 
             // Check if an active screen exists. 
-            if (this.ScreenCollection.ContainsKey(this.activeScreenKey))
+            if (this.ScreenCollection.ContainsKey(this._activeScreenName))
             {
                 // Get the currently active screen
-                IScreen activeScreen = this.ScreenCollection[this.activeScreenKey];
+                IScreen activeScreen = this.ScreenCollection[this._activeScreenName];
                 // Check if we can leave
                 if (activeScreen.CanLeave())
                 {
-                    IScreen screen = this.ScreenCollection[this.activeScreenKey];
+                    IScreen screen = this.ScreenCollection[this._activeScreenName];
                     if (args.UseAnimation)
                         VisibilityService.LeaveViewAnimation(screen.View, () => SwitchScreens(screen, args));
                     else
@@ -106,8 +106,8 @@ namespace Odin.UI.Infrastructure.ScreenFramework
             else
             {
                 // no active screen exists
-                PrepareScreen(args.ScreenKey, args.ScreenSubject);
-                ShowScreen(args.ScreenKey, args.UseAnimation);
+                PrepareScreen(args.ScreenName, args.ScreenSubject);
+                ShowScreen(args.ScreenName, args.UseAnimation);
             }
         }
 
@@ -151,8 +151,8 @@ namespace Odin.UI.Infrastructure.ScreenFramework
                 Region.Deactivate(oldScreen.View);
                 Region.Remove(oldScreen.View);
             }
-            PrepareScreen(newScreenArgs.ScreenKey,newScreenArgs.ScreenSubject);
-            ShowScreen(newScreenArgs.ScreenKey, newScreenArgs.UseAnimation);
+            PrepareScreen(newScreenArgs.ScreenName,newScreenArgs.ScreenSubject);
+            ShowScreen(newScreenArgs.ScreenName, newScreenArgs.UseAnimation);
         }
 
         private void DeactivateScreen()
@@ -160,7 +160,7 @@ namespace Odin.UI.Infrastructure.ScreenFramework
             IScreen activeScreen;
             try
             {
-                activeScreen = this.ScreenCollection[this.activeScreenKey];
+                activeScreen = this.ScreenCollection[this._activeScreenName];
             }
             catch (Exception)
             {
@@ -170,32 +170,32 @@ namespace Odin.UI.Infrastructure.ScreenFramework
             // Check if we can leave
             if (activeScreen !=null && activeScreen.CanLeave())
             {
-                IScreen screen = this.ScreenCollection[this.activeScreenKey];
+                IScreen screen = this.ScreenCollection[this._activeScreenName];
                 
                 this.VisibilityService.LeaveViewAnimation(screen.View, () =>
                                                                            {
                                                                                Region.Deactivate(screen.View);
                                                                                Region.Remove(screen.View);
                                                                            });
-                activeScreenKey = ScreenKeyType.None;
+                activeScreen = null;
             }
         }
 
-        private IScreen PrepareScreen(ScreenKeyType screenKey, object screenSubject)
+        private IScreen PrepareScreen(string screenName, object screenSubject)
         {
             IScreen screen = null;
             // use the screen type to see if the screen exists in the collection
-            if (ScreenCollection.ContainsKey(screenKey))
+            if (ScreenCollection.ContainsKey(screenName))
             {
-                screen = ScreenCollection[screenKey];
+                screen = ScreenCollection[screenName];
                 screen.Subject = screenSubject;
             }
             else // if it does not, then use the screen type to get the factory that is made for creating that type of screen and make it, add to collection
             {
-                if (this.ScreenFactoryRegistry.HasFactory(screenKey))
+                if (this.ScreenFactoryRegistry.HasFactory(screenName))
                 {
-                    screen = this.ScreenFactoryRegistry.Get(screenKey).CreateScreen(screenSubject);
-                    ScreenCollection.Add(screenKey, screen);
+                    screen = this.ScreenFactoryRegistry.Get(screenName).CreateScreen(screenSubject);
+                    ScreenCollection.Add(screenName, screen);
                 }
                 else
                 {
@@ -206,16 +206,16 @@ namespace Odin.UI.Infrastructure.ScreenFramework
             return screen;
         }
 
-        private void ShowScreen(ScreenKeyType screenKey)
+        private void ShowScreen(string screenName)
         {
-            ShowScreen(screenKey,true);
+            ShowScreen(screenName,true);
         }
-        private void ShowScreen(ScreenKeyType screenKey, bool useAnimation)
+        private void ShowScreen(string screenName, bool useAnimation)
         {
-            if (!this.ScreenCollection.ContainsKey(screenKey)) return;
+            if (!this.ScreenCollection.ContainsKey(screenName)) return;
 
-            IScreen screen = this.ScreenCollection[screenKey];
-            this.activeScreenKey = screenKey;
+            IScreen screen = this.ScreenCollection[screenName];
+            this._activeScreenName = screenName;
             if (!Region.Views.Contains(screen.View))
                 Region.Add(screen.View);
             Region.Activate(screen.View);
@@ -233,7 +233,7 @@ namespace Odin.UI.Infrastructure.ScreenFramework
         {
             // remove the screen from the screen collection
             var keys = ScreenCollection.Keys.ToList();
-            foreach (ScreenKeyType key in keys)
+            foreach (string key in keys)
             {
                 IScreen screen = ScreenCollection[key];
                 screen.Leaving();
