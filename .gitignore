@@ -1,0 +1,16 @@
+# .gitignore
+
+obj/
+Bin/
+ClientBin/
+Generated_Code/
+
+
+*.csproj.user
+*Resharper*
+*resharper*
+*.suo
+*.cache
+Thumbs.db
+-$*
+

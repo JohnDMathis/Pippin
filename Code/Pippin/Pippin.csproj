@@ -29,7 +29,6 @@
     <OutOfBrowserSettingsFile>Properties\OutOfBrowserSettings.xml</OutOfBrowserSettingsFile>
     <UsePlatformExtensions>false</UsePlatformExtensions>
     <ThrowErrorsInValidation>true</ThrowErrorsInValidation>
-    <LinkedServerProject>..\..\..\..\ERS\code\ERS2.Web\ERS2.Web.csproj</LinkedServerProject>
   </PropertyGroup>
   <!-- This property group is only here to support building this project using the 
        MSBuild 3.5 toolset. In order to work correctly with this older toolset, it needs 
@@ -98,6 +97,8 @@
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Bootstrapper.cs" />
+    <Compile Include="IShellView.cs" />
     <Compile Include="Logger.cs" />
     <Compile Include="ModuleBase.cs" />
     <Compile Include="PippinConfigurator.cs" />
@@ -112,6 +113,7 @@
     <Compile Include="UI\Conductors\IOverlayConductor.cs" />
     <Compile Include="UI\Conductors\MainRegionConductor.cs" />
     <Compile Include="UI\Conductors\OverlayConductor.cs" />
+    <Compile Include="UI\Events\IntelShellStartupEvent.cs" />
     <Compile Include="UI\Events\LogoffEvent.cs" />
     <Compile Include="UI\Events\LogonEvent.cs" />
     <Compile Include="UI\Events\ModuleLoadedEvent.cs" />

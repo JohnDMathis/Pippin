@@ -1,4 +1,4 @@
-namespace Odin.Common.Conductors
+namespace Pippin.UI.Conductors
 {
     public interface IFooterConductor
     {

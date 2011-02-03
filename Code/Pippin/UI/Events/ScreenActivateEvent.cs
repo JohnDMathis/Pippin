@@ -5,6 +5,7 @@ using System;
 
 namespace Pippin.UI.Events
 {
+
     public class ScreenEvent : CompositePresentationEvent<ScreenEventArgs>
     {
         
