@@ -57,13 +57,30 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
+  <PropertyGroup>
+    <SignAssembly>true</SignAssembly>
+  </PropertyGroup>
+  <PropertyGroup>
+    <AssemblyOriginatorKeyFile>PippinKeyFile.snk</AssemblyOriginatorKeyFile>
+  </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Microsoft.Practices.Prism, Version=4.0.0.0, Culture=neutral, processorArchitecture=MSIL" />
-    <Reference Include="Microsoft.Practices.Prism.Interactivity, Version=4.0.0.0, Culture=neutral, processorArchitecture=MSIL" />
-    <Reference Include="Microsoft.Practices.Prism.MefExtensions, Version=4.0.0.0, Culture=neutral, processorArchitecture=MSIL" />
-    <Reference Include="Microsoft.Practices.Prism.UnityExtensions, Version=4.0.0.0, Culture=neutral, processorArchitecture=MSIL" />
+    <Reference Include="Microsoft.Practices.Prism, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\Lib\Prism\Microsoft.Practices.Prism.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Practices.Prism.Interactivity, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\Lib\Prism\Microsoft.Practices.Prism.Interactivity.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Practices.Prism.UnityExtensions, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\Lib\Prism\Microsoft.Practices.Prism.UnityExtensions.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.Practices.ServiceLocation, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
     <Reference Include="Microsoft.Practices.Unity.Silverlight, Version=2.0.414.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
+    <Reference Include="Microsoft.VisualStudio.QualityTools.UnitTesting.Silverlight">
+      <HintPath>..\..\Lib\Microsoft.VisualStudio.QualityTools.UnitTesting.Silverlight.dll</HintPath>
+    </Reference>
     <Reference Include="mscorlib" />
     <Reference Include="System.ComponentModel.Composition, Version=2.0.5.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <Private>False</Private>
@@ -102,9 +119,14 @@
     <Compile Include="Logger.cs" />
     <Compile Include="ModuleBase.cs" />
     <Compile Include="PippinConfigurator.cs" />
+    <Compile Include="Testing\LocalDomainClient.cs" />
+    <Compile Include="Testing\SpecificationExtensions.cs" />
     <Compile Include="UI\Commands\CommandAction.cs" />
     <Compile Include="UI\Commands\CommandBehavior.cs" />
     <Compile Include="UI\Commands\DataContextChangedHandler.cs" />
+    <Compile Include="UI\Commands\IReturnCommandBehavior.cs" />
+    <Compile Include="UI\Commands\pwReturnCommandBehavior.cs" />
+    <Compile Include="UI\Commands\ReturnCommandBehavior.cs" />
     <Compile Include="UI\Conductors\FooterConductor.cs" />
     <Compile Include="UI\Conductors\HeaderConductor.cs" />
     <Compile Include="UI\Conductors\IFooterConductor.cs" />
@@ -118,6 +140,8 @@
     <Compile Include="UI\Events\LogonEvent.cs" />
     <Compile Include="UI\Events\ModuleLoadedEvent.cs" />
     <Compile Include="UI\Events\SetOverlayEnabledEvent.cs" />
+    <Compile Include="UI\Behaviors\ReturnKey.cs" />
+    <Compile Include="UI\Behaviors\UpdateOnChange.cs" />
     <Compile Include="UI\IApplicationController.cs" />
     <Compile Include="UI\Modules\IModuleTracker.cs" />
     <Compile Include="UI\Regions\RegionConstants.cs" />
@@ -144,6 +168,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="UI\Visibility\IVisibilityService.cs" />
     <Compile Include="UI\Visibility\VisibilityService.cs" />
+    <Compile Include="UI\Helpers\VisualStates.cs" />
   </ItemGroup>
   <ItemGroup>
     <ApplicationDefinition Include="App.xaml">
@@ -156,6 +181,7 @@
     </Page>
   </ItemGroup>
   <ItemGroup>
+    <None Include="PippinKeyFile.snk" />
     <None Include="Properties\AppManifest.xml" />
   </ItemGroup>
   <ItemGroup />
@@ -174,4 +200,7 @@
       </FlavorProperties>
     </VisualStudio>
   </ProjectExtensions>
+  <PropertyGroup>
+    <PostBuildEvent>copy $(TargetDir)Pippin.dll c:\dev\ClearImage\Lib\</PostBuildEvent>
+  </PropertyGroup>
 </Project>

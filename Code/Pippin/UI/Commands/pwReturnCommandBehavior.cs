@@ -1,10 +1,10 @@
 using System.Windows.Controls;
 using System.Windows.Input;
-using Microsoft.Practices.Composite.Presentation.Commands;
+using Microsoft.Practices.Prism.Commands;
 
-namespace Odin.UI.Infrastructure.Commands
+namespace Pippin.UI.Commands
 {
-    public class pwReturnCommandBehavior : CommandBehaviorBase<PasswordBox>
+    public class pwReturnCommandBehavior : CommandBehaviorBase<PasswordBox>, IReturnCommandBehavior
     {
         public pwReturnCommandBehavior(PasswordBox pwBox)
             : base(pwBox)

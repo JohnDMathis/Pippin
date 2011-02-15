@@ -1,10 +1,11 @@
 using System.Windows.Controls;
 using System.Windows.Input;
-using Microsoft.Practices.Composite.Presentation.Commands;
+using Microsoft.Practices.Prism.Commands;
 
-namespace Odin.UI.Infrastructure.Commands
+namespace Pippin.UI.Commands
 {
-    public class ReturnCommandBehavior : CommandBehaviorBase<TextBox>
+
+    public class ReturnCommandBehavior : CommandBehaviorBase<TextBox>, IReturnCommandBehavior
     {
         public ReturnCommandBehavior(TextBox textBox)
             : base(textBox)

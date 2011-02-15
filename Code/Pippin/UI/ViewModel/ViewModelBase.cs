@@ -17,7 +17,7 @@ namespace Pippin.UI.ViewModel
 
         #region [ INotifyPropertyChanged ]
 
-        protected internal void FirePropertyChanged(string propertyName)
+        public void RaisePropertyChanged(string propertyName)
         {
             if (PropertyChanged != null)
             {

@@ -92,6 +92,20 @@ namespace Pippin
             return true;
         }
 
+        protected bool RegisterIfMissing<T>(bool registerAsSingleton, InjectionConstructor constructor)
+        {
+            if (Container.IsRegistered<T>()) return false;
+            if (registerAsSingleton)
+            {
+                Container.RegisterType<T>(new ContainerControlledLifetimeManager(), constructor);
+            }
+            else
+            {
+                Container.RegisterType<T>(constructor);
+            }
+            return true;
+        }
+
 
         protected bool RegisterIfMissing<T>()
         {
