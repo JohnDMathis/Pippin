@@ -5,7 +5,7 @@ namespace Pippin.UI.Commands
 {
     public interface IReturnCommandBehavior
     {
-        string DefaultTextAfterCommandExecution { get; set; }
+        string DefaultTextAfterExecution { get; set; }
         ICommand Command { get; set; }
         object CommandParameter { get; set; }
     }

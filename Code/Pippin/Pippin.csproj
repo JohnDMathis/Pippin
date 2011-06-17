@@ -125,6 +125,8 @@
     <Compile Include="UI\Commands\CommandBehavior.cs" />
     <Compile Include="UI\Commands\DataContextChangedHandler.cs" />
     <Compile Include="UI\Commands\IReturnCommandBehavior.cs" />
+    <Compile Include="UI\Commands\ListSelect.cs" />
+    <Compile Include="UI\Commands\ListSelectCommandBehavior.cs" />
     <Compile Include="UI\Commands\pwReturnCommandBehavior.cs" />
     <Compile Include="UI\Commands\ReturnCommandBehavior.cs" />
     <Compile Include="UI\Conductors\FooterConductor.cs" />
@@ -201,6 +203,9 @@
     </VisualStudio>
   </ProjectExtensions>
   <PropertyGroup>
-    <PostBuildEvent>copy $(TargetDir)Pippin.dll c:\dev\ClearImage\Lib\</PostBuildEvent>
+    <PostBuildEvent>copy $(TargetDir)Pippin.dll c:\dev\Suzuki\lib\client
+copy $(TargetDir)Pippin.dll c:\dev\RentSys\lib\
+copy $(TargetDir)Pippin.dll c:\dev\VWV\Lib\Client\
+</PostBuildEvent>
   </PropertyGroup>
 </Project>

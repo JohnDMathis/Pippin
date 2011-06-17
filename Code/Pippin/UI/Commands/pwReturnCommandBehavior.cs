@@ -14,7 +14,7 @@ namespace Pippin.UI.Commands
         }
 
 
-        public string DefaultTextAfterCommandExecution { get; set; }
+        public string DefaultTextAfterExecution { get; set; }
 
         protected void KeyPressed(Key key)
         {

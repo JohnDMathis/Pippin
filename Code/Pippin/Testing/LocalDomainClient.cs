@@ -45,6 +45,7 @@ namespace Pippin.Testing
             LocalAsyncResult asyncResult = new LocalAsyncResult(query.QueryName, callback, userState, localQuery);
             _syncContext.Post(delegate(object o)
                                   {
+                                      Debug.WriteLine("calling .Complete()");
                                       ((LocalAsyncResult)o).Complete();
                                   }, asyncResult);
             return asyncResult;
@@ -53,6 +54,7 @@ namespace Pippin.Testing
 
         protected override sealed QueryCompletedResult EndQueryCore(IAsyncResult asyncResult)
         {
+            Debug.WriteLine("EndQueryCore()");
             LocalAsyncResult localAsyncResult = (LocalAsyncResult)asyncResult;
             _queriesInProgress.Remove(localAsyncResult.QueryName);
             int c = (localAsyncResult.Entities == null) ? 0 : localAsyncResult.Entities.Count();
@@ -198,6 +200,7 @@ namespace Pippin.Testing
             {
                 _completed = true;
                 _callback(this);
+                Debug.WriteLine("end of Complete()");
             }
 
             #region IAsyncResult Members

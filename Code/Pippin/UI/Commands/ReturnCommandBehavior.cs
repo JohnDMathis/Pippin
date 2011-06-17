@@ -16,7 +16,7 @@ namespace Pippin.UI.Commands
             textBox.LostFocus += (s, e) => this.LostFocus();
         }
 
-        public string DefaultTextAfterCommandExecution { get; set; }
+        public string DefaultTextAfterExecution { get; set; }
 
         protected void KeyPressed(Key key)
         {
@@ -24,35 +24,31 @@ namespace Pippin.UI.Commands
             {
                 // if developer entered a name for the textbox, include it in the parameter response, delimited with a '|'
                 string cmdParam = "";
-                if (TargetObject.Name != null)
+                if (!string.IsNullOrEmpty(TargetObject.Name))
                     cmdParam = TargetObject.Name + "|";
-                cmdParam +=TargetObject.Text;
-                
+                cmdParam += TargetObject.Text;
+
                 CommandParameter = cmdParam;
                 ExecuteCommand();
 
-                this.ResetText();
+                if (!string.IsNullOrEmpty(DefaultTextAfterExecution))
+                    TargetObject.Text = DefaultTextAfterExecution;
             }
         }
 
         private void GotFocus()
         {
-            if (TargetObject != null && TargetObject.Text == this.DefaultTextAfterCommandExecution)
+            if (TargetObject != null && TargetObject.Text == this.DefaultTextAfterExecution)
             {
-                this.ResetText();
+                TargetObject.Text = string.Empty;
             }
-        }
-
-        private void ResetText()
-        {
-            TargetObject.Text = string.Empty;
         }
 
         private void LostFocus()
         {
-            if (TargetObject != null && string.IsNullOrEmpty(TargetObject.Text) && this.DefaultTextAfterCommandExecution != null)
+            if (TargetObject != null && string.IsNullOrEmpty(TargetObject.Text) && this.DefaultTextAfterExecution != null)
             {
-                TargetObject.Text = this.DefaultTextAfterCommandExecution;
+                TargetObject.Text = this.DefaultTextAfterExecution;
             }
         }
     }

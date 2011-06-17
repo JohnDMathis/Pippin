@@ -2,7 +2,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 
-namespace Odin.UI.Infrastructure.Commands
+namespace Pippin.UI.Commands
 {
     public static class ListSelect
     {

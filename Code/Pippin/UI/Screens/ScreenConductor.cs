@@ -12,6 +12,7 @@ using Pippin.UI.ViewModel;
 using Pippin.UI.VisibilityServices;
 using Pippin.UI.Regions;
 using Pippin.UI.Events;
+using Microsoft.Practices.Prism.Logging;
 
 namespace Pippin.UI.Screens
 {
@@ -27,12 +28,14 @@ namespace Pippin.UI.Screens
         protected RegionName MyRegionName { get; set; }
         protected IEventAggregator _eventManager { get; private set; }
         protected string _activeScreenName { get; set; }
+        protected ILoggerFacade _logger{get;set;}
 
         public ScreenConductor(IUnityContainer container, 
             IScreenFactoryRegistry screenFactoryRegistry, 
             IEventAggregator eventAggregator, 
             IRegionManager regionManager, 
-            IVisibilityService visibilityService)
+            IVisibilityService visibilityService
+            )
         {
             this._activeScreenName = "";
 
@@ -41,13 +44,18 @@ namespace Pippin.UI.Screens
             _eventManager = eventAggregator;
             this.RegionManager = regionManager;
             this.VisibilityService = visibilityService;
-            
+            _logger = Container.Resolve<ILoggerFacade>();
             this.ScreenCollection = new Dictionary<string, IScreen>();
             SubscribeToEvents();
         }
 
 
         #region Private Methods
+
+        protected void Log(string message)
+        {
+            _logger.Log("ScreenConductor<"+MyRegionName+">; "+message, Category.Debug, Priority.High);
+        }
 
         protected void SubscribeToEvents()
         {
@@ -67,7 +75,7 @@ namespace Pippin.UI.Screens
         {
             // check the screen's region.  If it is not "my" region, then ignore the request
             if (args.RegionName != MyRegionName) return;
-
+            Log("HandleScreenEvent; handling screen=" + args.ScreenName + ",  event="+args.Event);
             if (args.Event == ScreenEventType.Activate)
                 ActivateScreen(args);
             else if (args.Event == ScreenEventType.Deactivate)
@@ -77,11 +85,13 @@ namespace Pippin.UI.Screens
         }
         private void ActivateScreen(ScreenEventArgs args){
 
+            Log("ActivateScreen(); " + args.ScreenName);
             // check if there is no such registered screen type. 
             if (!this.ScreenFactoryRegistry.HasFactory(args.ScreenName))
             {
                 // the most likely reason is that the screen's module is not loaded.
                 // check again in 2 seconds
+                Log(string.Format("Requested screen '{0}' is not available. Verify it is registered.", args.ScreenName));
                 HandleScreenEventRetry(args);
                 return;
             }
@@ -105,6 +115,7 @@ namespace Pippin.UI.Screens
             }
             else
             {
+                Log("call PrepareScreen()");
                 // no active screen exists
                 PrepareScreen(args.ScreenName, args.ScreenSubject);
                 ShowScreen(args.ScreenName, args.UseAnimation);
@@ -116,6 +127,7 @@ namespace Pippin.UI.Screens
 
         private void HandleScreenEventRetry(ScreenEventArgs args)
         {
+            Log("HandleScreenEventRetry(); screenName="+args.ScreenName);
             // create a dispatcherTimer to call activate screen
             if (_jobQueue == null) _jobQueue = new List<ScreenEventArgs>();
             _jobQueue.Add(args);
@@ -129,18 +141,20 @@ namespace Pippin.UI.Screens
 
         private void TimerDing(object sender, EventArgs e)
         {
+            Log("TimerDing(); Jobs=" + _jobQueue.Count);
             _timer.Stop();
             if (_jobQueue.Count > 0)
             {
                 ScreenEventArgs job = _jobQueue[0];
+                Log("TimerDing(); removing 1;" + job.ScreenName);
                 _jobQueue.RemoveAt(0);
                 HandleScreenEvent(job);
             }
             // more jobs in queue?
             if (_jobQueue.Count == 0)
+            {
                 _timer = null;
-            else
-                _timer.Start();
+            }
         }
 
         private void SwitchScreens(IScreen oldScreen, ScreenEventArgs newScreenArgs)

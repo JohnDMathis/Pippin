@@ -1,7 +1,7 @@
 using System.Windows.Controls;
-using Microsoft.Practices.Composite.Presentation.Commands;
+using Microsoft.Practices.Prism.Commands;
 
-namespace Odin.UI.Infrastructure.Commands
+namespace Pippin.UI.Commands
 {
     public class ListSelectCommandBehavior : CommandBehaviorBase<ListBox>
     {

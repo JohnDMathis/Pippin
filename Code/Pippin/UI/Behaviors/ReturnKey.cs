@@ -31,6 +31,9 @@ namespace Pippin.UI.Behaviors
         public static readonly DependencyProperty CommandBehaviorProperty =
             DependencyProperty.RegisterAttached("CommandBehavior", typeof(IReturnCommandBehavior), typeof(ReturnKey), new PropertyMetadata(null));
 
+        public static readonly DependencyProperty DefaultTextAfterExecutionProperty =
+            DependencyProperty.RegisterAttached("DefaultTextAfterExecution", typeof(string), typeof(ReturnKey), new PropertyMetadata(DefaultTextAfterExecutionSet));
+
         private static void CommandPropertySet(DependencyObject depObj, DependencyPropertyChangedEventArgs e)
         {
             IReturnCommandBehavior behavior = depObj.GetValue(CommandBehaviorProperty) as IReturnCommandBehavior;
@@ -45,7 +48,12 @@ namespace Pippin.UI.Behaviors
                 throw new Exception("ReturnKey only operates on TextBox and PasswordBox.");
         }
 
-
+        private static void DefaultTextAfterExecutionSet(DependencyObject ctrl, DependencyPropertyChangedEventArgs e)
+        {
+            var behavior = (IReturnCommandBehavior)ctrl;
+            if (behavior != null)
+                behavior.DefaultTextAfterExecution = e.NewValue.ToString();
+        }
         private static IReturnCommandBehavior ResolveCommandBehavior(DependencyObject ctrl)
         {
             IReturnCommandBehavior behavior;
@@ -60,3 +68,4 @@ namespace Pippin.UI.Behaviors
 
     }
 }
+
