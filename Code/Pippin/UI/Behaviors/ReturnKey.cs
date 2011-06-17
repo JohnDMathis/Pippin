@@ -24,6 +24,16 @@ namespace Pippin.UI.Behaviors
             obj.SetValue(CommandProperty, value);
         }
 
+        public static string GetDefaultTextAfterExecution(DependencyObject obj)
+        {
+            return (string)obj.GetValue(DefaultTextAfterExecutionProperty);
+        }
+
+        public static void GetDefaultTextAfterExecution(DependencyObject obj, string value)
+        {
+            obj.SetValue(DefaultTextAfterExecutionProperty, value);
+        }
+
         // Using a DependencyProperty as the backing store for Command.  This enables animation, styling, binding, etc...
         public static readonly DependencyProperty CommandProperty =
             DependencyProperty.RegisterAttached("Command", typeof(ICommand), typeof(ReturnKey), new PropertyMetadata(CommandPropertySet));
