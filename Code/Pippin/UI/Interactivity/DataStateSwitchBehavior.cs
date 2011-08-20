@@ -7,12 +7,12 @@ using System.Windows.Controls;
 using System.Collections;
 using System.Collections.Generic;
 using System.Windows.Markup;
-using Odin.UI.Infrastructure.Interactivity.Helpers;
+using Pippin.UI.Interactivity.Helpers;
 
 // borrowed with thanks from Pete Blois:
 // http://blois.us/blog/2009/04/datatrigger-bindings-on-non.html
 
-namespace Odin.UI.Infrastructure.Interactivity
+namespace Pippin.UI.Interactivity
 {
     [ContentProperty("States")]
     public class DataStateSwitchBehavior : Behavior<FrameworkElement> {
@@ -65,8 +65,13 @@ namespace Odin.UI.Infrastructure.Interactivity
             foreach (DataStateSwitchCase switchCase in this.States) {
                 if (switchCase.IsValid(this.listener.Value)) {
                     Control targetControl = DataStateSwitchBehavior.FindTargetControl(this.AssociatedObject);
-                    if (targetControl != null) {
-                        VisualStateManager.GoToState(targetControl, switchCase.State, true);
+                    if (targetControl != null)
+                    {
+                        // state may be omitted if the value matches the target state name
+                        string targetState = switchCase.State;
+                        if (string.IsNullOrEmpty(targetState))
+                            targetState = switchCase.Value.ToString();
+                        VisualStateManager.GoToState(targetControl, targetState, true);
                     }
                     break;
                 }

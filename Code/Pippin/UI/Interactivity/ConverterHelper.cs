@@ -8,7 +8,7 @@ using System.Windows.Markup;
 // borrowed with thanks from Pete Blois:
 // http://blois.us/blog/2009/04/datatrigger-bindings-on-non.html
 
-namespace Odin.UI.Infrastructure.Interactivity
+namespace Pippin.UI.Interactivity
 {
     public static class ConverterHelper {
 

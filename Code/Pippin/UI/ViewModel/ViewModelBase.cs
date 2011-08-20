@@ -2,6 +2,8 @@ using System.Collections.Specialized;
 using System.ComponentModel;
 using System.Windows;
 using Pippin.UI.Events;
+using Pippin.UI.Screens;
+
 using Microsoft.Practices.Prism.Events;
 
 namespace Pippin.UI.ViewModel
@@ -13,8 +15,7 @@ namespace Pippin.UI.ViewModel
         public FrameworkElement ContentContainer { get; set; }
         public event PropertyChangedEventHandler PropertyChanged;
         public event NotifyCollectionChangedEventHandler CollectionChanged;
-//        public virtual ScreenBase Screen { get; set; }
-//       protected DomainContext _DomainContext { get; set; }
+        public ScreenBase Screen { get; set; }
 
         #region [ INotifyPropertyChanged ]
 
@@ -36,7 +37,7 @@ namespace Pippin.UI.ViewModel
         public virtual void Start()
         {
         }
-
+        
         public virtual void CleanUp()
         {
             

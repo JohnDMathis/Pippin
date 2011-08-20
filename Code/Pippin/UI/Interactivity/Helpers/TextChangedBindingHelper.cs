@@ -1,7 +1,7 @@
 using System.Windows;
 using System.Windows.Controls;
 
-namespace Odin.UI.Infrastructure.Interactivity.Helpers
+namespace Pippin.UI.Interactivity.Helpers
 {
     /// <summary>
     /// Supports a PropertyChanged-Trigger for DataBindings

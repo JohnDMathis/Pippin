@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Windows;
 using System.Windows.Data;
 
-namespace Odin.UI.Infrastructure.Interactivity.Helpers
+namespace Pippin.UI.Interactivity.Helpers
 {
     public class BindingListener {
 

@@ -1,12 +1,13 @@
 ﻿using System.Windows;
 using System.Windows.Data;
 using System.Windows.Interactivity;
-using Odin.UI.Infrastructure.Interactivity.Helpers;
+using Pippin.UI.Interactivity.Helpers;
+using Pippin.UI.Interactivity.Helpers;
 
 // borrowed with thanks from Pete Blois:
 // http://blois.us/blog/2009/04/datatrigger-bindings-on-non.html
 
-namespace Odin.UI.Infrastructure.Interactivity
+namespace Pippin.UI.Interactivity
 {
     public class DataTrigger : TriggerBase<FrameworkElement> {
 

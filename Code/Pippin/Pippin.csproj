@@ -145,6 +145,12 @@
     <Compile Include="UI\Behaviors\ReturnKey.cs" />
     <Compile Include="UI\Behaviors\UpdateOnChange.cs" />
     <Compile Include="UI\IApplicationController.cs" />
+    <Compile Include="UI\Interactivity\ConverterHelper.cs" />
+    <Compile Include="UI\Interactivity\DataStateBehavior.cs" />
+    <Compile Include="UI\Interactivity\DataStateSwitchBehavior.cs" />
+    <Compile Include="UI\Interactivity\DataTrigger.cs" />
+    <Compile Include="UI\Interactivity\Helpers\BindingListener.cs" />
+    <Compile Include="UI\Interactivity\Helpers\TextChangedBindingHelper.cs" />
     <Compile Include="UI\Modules\IModuleTracker.cs" />
     <Compile Include="UI\Regions\RegionConstants.cs" />
     <Compile Include="UI\Converters\Not.cs" />
@@ -162,6 +168,7 @@
     <Compile Include="UI\Screens\ScreenFactoryBase.cs" />
     <Compile Include="UI\Screens\ScreenFactoryRegistry.cs" />
     <Compile Include="UI\Screens\ScreenKeyType.cs" />
+    <Compile Include="UI\ViewModel\DataContextProxy.cs" />
     <Compile Include="UI\ViewModel\IViewModel.cs" />
     <Compile Include="UI\ViewModel\ViewModelBase.cs" />
     <Compile Include="MainPage.xaml.cs">
@@ -205,7 +212,7 @@
   <PropertyGroup>
     <PostBuildEvent>copy $(TargetDir)Pippin.dll c:\dev\Suzuki\lib\client
 copy $(TargetDir)Pippin.dll c:\dev\RentSys\lib\
-copy $(TargetDir)Pippin.dll c:\dev\VWV\Lib\Client\
+
 </PostBuildEvent>
   </PropertyGroup>
 </Project>
