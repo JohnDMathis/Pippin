@@ -13,25 +13,31 @@ namespace Pippin.UI.Events
 
     public static class EventAggregator_Extensions_For_Screen_Events
     {
-        public static void Screen_Activate(this IEventAggregator ea, string screenName)
+        public static void ScreenActivate(this IEventAggregator ea, string screenName)
         {
             var sea = new ScreenEventArgs { Event = ScreenEventType.Activate, ScreenName = screenName };
             ea.GetEvent<ScreenEvent>().Publish(sea);
         }
 
-        public static void Screen_Activate(this IEventAggregator ea, string screenName, object subject)
+        public static void ScreenActivate(this IEventAggregator ea, string screenName, object subject)
         {
             var sea = new ScreenEventArgs { Event = ScreenEventType.Activate, ScreenName = screenName, ScreenSubject = subject };
             ea.GetEvent<ScreenEvent>().Publish(sea);
         }
 
-        public static void Screen_Activate(this IEventAggregator ea, string screenName, object subject, RegionName region)
+        public static void ScreenActivate(this IEventAggregator ea, string screenName, object subject, RegionName region)
         {
             var sea = new ScreenEventArgs { Event = ScreenEventType.Activate, ScreenName = screenName, ScreenSubject = subject, RegionName=region };
             ea.GetEvent<ScreenEvent>().Publish(sea);
         }
 
-        public static void Screen_Event(this IEventAggregator ea, ScreenEventArgs sea)
+        public static void ScreenDeactivate(this IEventAggregator ea, string screenName)
+        {
+            var sea = new ScreenEventArgs { Event = ScreenEventType.Deactivate, ScreenName = screenName };
+            ea.GetEvent<ScreenEvent>().Publish(sea);
+        }
+
+        public static void ScreenEvent(this IEventAggregator ea, ScreenEventArgs sea)
         {
             ea.GetEvent<ScreenEvent>().Publish(sea);
         }

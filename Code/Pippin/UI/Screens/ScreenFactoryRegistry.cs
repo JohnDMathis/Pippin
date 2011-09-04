@@ -15,27 +15,27 @@ namespace Pippin.UI.Screens
             this.ScreenFactoryCollection = new Dictionary<string, Type>();
         }
 
-        public IScreenFactory Get(string screenName)
+        public IScreenFactory Get(string screenId)
         {
             IScreenFactory screenFactory = null;
-            if (this.HasFactory(screenName))
+            if (this.HasFactory(screenId))
             {
-                Type registeredScreenFactory = ScreenFactoryCollection[screenName];
+                Type registeredScreenFactory = ScreenFactoryCollection[screenId];
                 screenFactory = (IScreenFactory)Container.Resolve(registeredScreenFactory);
             }
             return screenFactory;
         }
 
-        public void Register(string screenName, Type registeredScreenFactoryType)
+        public void Register(string screenId, Type registeredScreenFactoryType)
         {
-            if (!HasFactory(screenName))
-                this.ScreenFactoryCollection.Add(screenName, registeredScreenFactoryType);
+            if (!HasFactory(screenId))
+                this.ScreenFactoryCollection.Add(screenId, registeredScreenFactoryType);
         }
 
 
-        public bool HasFactory(string screenName)
+        public bool HasFactory(string screenId)
         {
-            return (this.ScreenFactoryCollection.ContainsKey(screenName));
+            return (this.ScreenFactoryCollection.ContainsKey(screenId));
         }
 
     }

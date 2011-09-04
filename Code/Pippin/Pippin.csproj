@@ -129,6 +129,8 @@
     <Compile Include="UI\Commands\ListSelectCommandBehavior.cs" />
     <Compile Include="UI\Commands\pwReturnCommandBehavior.cs" />
     <Compile Include="UI\Commands\ReturnCommandBehavior.cs" />
+    <Compile Include="UI\Commands\SliderCommandBehavior.cs" />
+    <Compile Include="UI\Commands\SliderValue.cs" />
     <Compile Include="UI\Conductors\FooterConductor.cs" />
     <Compile Include="UI\Conductors\HeaderConductor.cs" />
     <Compile Include="UI\Conductors\IFooterConductor.cs" />
@@ -158,6 +160,7 @@
     <Compile Include="UI\Converters\VisibilityConverter.cs" />
     <Compile Include="UI\Events\EventAggregatorClient.cs" />
     <Compile Include="UI\Screens\IScreen.cs" />
+    <Compile Include="UI\Screens\IScreenConductor.cs" />
     <Compile Include="UI\Screens\IScreenFactory.cs" />
     <Compile Include="UI\Screens\IScreenFactoryRegistry.cs" />
     <Compile Include="UI\Events\ScreenActivateEvent.cs" />

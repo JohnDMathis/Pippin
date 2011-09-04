@@ -1,7 +1,7 @@
 using Microsoft.Practices.Prism.Events;
 using System;
 
-namespace Pippin.UI.Events.Overlay
+namespace Pippin.UI.Events
 {
     public class SetOverlayStateChangedEvent : CompositePresentationEvent<bool>
     {

@@ -16,7 +16,7 @@ using Microsoft.Practices.Prism.Logging;
 
 namespace Pippin.UI.Screens
 {
-    public class ScreenConductor
+    public class ScreenConductor : IScreenConductor
     {
 
         protected IUnityContainer Container { get; set; }
@@ -73,18 +73,18 @@ namespace Pippin.UI.Screens
 
         protected virtual void HandleScreenEvent(ScreenEventArgs args)
         {
+            // check the event type for deactivate, because
             // check the screen's region.  If it is not "my" region, then ignore the request
             if (args.RegionName != MyRegionName) return;
             Log("HandleScreenEvent; handling screen=" + args.ScreenName + ",  event="+args.Event);
             if (args.Event == ScreenEventType.Activate)
                 ActivateScreen(args);
             else if (args.Event == ScreenEventType.Deactivate)
-                DeactivateScreen();
+                DeactivateScreen(args.ScreenName);
             else if (args.Event == ScreenEventType.CloseInactiveScreens)
                 CloseInactiveScreens();
         }
         private void ActivateScreen(ScreenEventArgs args){
-
             Log("ActivateScreen(); " + args.ScreenName);
             // check if there is no such registered screen type. 
             if (!this.ScreenFactoryRegistry.HasFactory(args.ScreenName))
@@ -169,32 +169,43 @@ namespace Pippin.UI.Screens
             ShowScreen(newScreenArgs.ScreenName, newScreenArgs.UseAnimation);
         }
 
-        private void DeactivateScreen()
+        public void DeactivateScreen(string screenName)
         {
-            IScreen activeScreen;
+            IScreen screen;
             try
             {
-                activeScreen = this.ScreenCollection[this._activeScreenName];
+                screen = this.ScreenCollection[screenName];
             }
             catch (Exception)
             {
-                activeScreen = null;
+                screen = null;
             }
 
             // Check if we can leave
-            if (activeScreen !=null && activeScreen.CanLeave())
-            {
-                IScreen screen = this.ScreenCollection[this._activeScreenName];
-                
-                this.VisibilityService.LeaveViewAnimation(screen.View, () =>
-                                                                           {
-                                                                               Region.Deactivate(screen.View);
-                                                                               Region.Remove(screen.View);
-                                                                           });
-                activeScreen = null;
-            }
+            if (screen != null)
+                DeactivateScreen(screen);
         }
 
+        public void DeactivateScreen()
+        {
+            DeactivateScreen(_activeScreenName);
+        }
+
+        public void DeactivateScreen(IScreen screen)
+        {
+            if (screen != null && screen.CanLeave())
+            {
+                this.VisibilityService.LeaveViewAnimation(screen.View, () =>
+                {
+                    Region.Deactivate(screen.View);
+                    Region.Remove(screen.View);
+                    ScreenDeactivated(screen.Name);
+                    screen.Conductor = null;
+                });
+                if (screen.Name == _activeScreenName)
+                    _activeScreenName = "";
+            }
+        }
         private IScreen PrepareScreen(string screenName, object screenSubject)
         {
             IScreen screen = null;
@@ -241,6 +252,8 @@ namespace Pippin.UI.Screens
                 screen.View.Opacity = 1.0;
                 screen.View.RenderTransform = new ScaleTransform {ScaleX = 1, ScaleY = 1};
             }
+            screen.Activated(this, screenName);
+            ScreenActivated(screenName);
         }
 
         private void CloseInactiveScreens()
@@ -256,5 +269,12 @@ namespace Pippin.UI.Screens
         }
 
         #endregion
+
+        protected virtual void ScreenActivated(string screenName)
+        {
+        }
+        protected virtual void ScreenDeactivated(string screenName)
+        {
+        }
     }
 }

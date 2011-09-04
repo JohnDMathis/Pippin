@@ -15,7 +15,7 @@ namespace Pippin.UI.ViewModel
         public FrameworkElement ContentContainer { get; set; }
         public event PropertyChangedEventHandler PropertyChanged;
         public event NotifyCollectionChangedEventHandler CollectionChanged;
-        public ScreenBase Screen { get; set; }
+        public IScreen Screen { get; set; }
 
         #region [ INotifyPropertyChanged ]
 
@@ -41,6 +41,16 @@ namespace Pippin.UI.ViewModel
         public virtual void CleanUp()
         {
             
+        }
+
+        public virtual bool CanLeave()
+        {
+            return true;
+        }
+
+        public virtual bool CanEnter()
+        {
+            return true;
         }
     }
 }
